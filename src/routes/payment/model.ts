@@ -3,7 +3,7 @@ import { transaction } from '../../api/database'
 import { IPayBody, IUser } from './types'
 
 const GET_USER = `
-SELECT id, balance FROM users WHERE id = $1`
+SELECT id, balance FROM users WHERE id = $1 FOR UPDATE`
 
 function getUser(pgclient: PoolClient, id: number): Promise<IUser> {
   return transaction(pgclient, GET_USER, id)
