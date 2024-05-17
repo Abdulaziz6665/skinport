@@ -10,8 +10,10 @@ export default {
       const cacheData = await redis.get(cacheKey)
       if (cacheData) return JSON.parse(cacheData)
 
-      const tradable = await fetch('https://api.skinport.com/v1/items?tradable=true')
-      const notTradable = await fetch('https://api.skinport.com/v1/items?tradable=false')
+      const [tradable, notTradable] = await Promise.all([
+        fetch('https://api.skinport.com/v1/items?tradable=true'),
+        fetch('https://api.skinport.com/v1/items?tradable=false'),
+      ])
 
       const tradableData: ISkinport[] = await tradable.json()
       const notTradableData: ISkinport[] = await notTradable.json()
@@ -35,7 +37,7 @@ export default {
       })
 
       const oneHoursInSecounds = 60 * 60
-      await redis.set(cacheKey, JSON.stringify(mixed), 'EX', oneHoursInSecounds)
+      // await redis.set(cacheKey, JSON.stringify(mixed), 'EX', oneHoursInSecounds)
 
       reply.send(mixed)
     } catch (error) {
