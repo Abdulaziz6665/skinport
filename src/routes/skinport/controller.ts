@@ -37,7 +37,7 @@ export default {
       })
 
       const oneHoursInSecounds = 60 * 60
-      // await redis.set(cacheKey, JSON.stringify(mixed), 'EX', oneHoursInSecounds)
+      await redis.set(cacheKey, JSON.stringify(mixed), 'EX', oneHoursInSecounds)
 
       reply.send(mixed)
     } catch (error) {
